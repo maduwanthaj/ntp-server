@@ -1,5 +1,3 @@
----
-
 # Lightweight Chrony NTP server in Docker ⏱️
 
 A minimal, efficient Docker container running **Chrony** as an NTP server, designed for lightweight time synchronization with a customizable configuration.
@@ -81,5 +79,3 @@ docker logs ntp-server
 ## License
 
 This project is licensed under the MIT License.
-
----
