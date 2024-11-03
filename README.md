@@ -39,11 +39,11 @@ The container can be configured via environment variables:
 
 | Variable           | Description                                                     | Default             |
 |--------------------|-----------------------------------------------------------------|---------------------|
-| `NTP_POOL`         | NTP pool to sync time from. Available options:<br>- `public`: `pool.ntp.org`<br>- `google`: `time.google.com` | `pool.ntp.org`      |
-| `NTP_SERVER`       | Specific NTP servers to sync time from (comma-separated). Available options:<br>- **Cloudflare**: `time.cloudflare.com`<br>- **Google**: `time1.google.com,time2.google.com,time3.google.com,time4.google.com`<br>- **Alibaba**: `ntp1.aliyun.com,ntp2.aliyun.com,ntp3.aliyun.com,ntp4.aliyun.com` | -                   |
+| `NTP_POOL`         | NTP pool to sync time from.<br>Available options:<br>- Public: `pool.ntp.org`<br>- Google: `time.google.com` | `pool.ntp.org`      |
+| `NTP_SERVER`       | Specific NTP servers to sync time from (comma-separated).<br>Available options:<br>- Cloudflare: `time.cloudflare.com`<br>- Google: `time1.google.com,time2.google.com,time3.google.com,time4.google.com`<br>- Alibaba: `ntp1.aliyun.com,ntp2.aliyun.com,ntp3.aliyun.com,ntp4.aliyun.com` | -                   |
 | `NTP_CLIENT_ALLOW` | Allowed client IP ranges (comma-separated).                     | `allow all`         |
 | `NTP_CLIENT_DENY`  | Denied client IP ranges (comma-separated).                      | None                |
-| `LOG_LEVEL`        | Sets the Chrony log level. Options are:<br>  - `0`: Informational (default)<br>  - `1`: Warnings<br>  - `2`: Non-fatal errors<br>  - `3`: Fatal errors | `0` (Informational) |
+| `LOG_LEVEL`        | Sets the Chrony log level. Options are:<br>  - `0`: informational (default)<br>  - `1`: warning<br>  - `2`: non-fatal error<br>  - `3`: fatal error | `0` (informational) |
 | `TZ`               | Set the time zone for the container. For example: `Asia/Colombo`. | UTC                 |
 
 **Note:** Setting `NTP_POOL` will override the default pool. If both `NTP_POOL` and `NTP_SERVER` are provided, `NTP_POOL` takes precedence.
