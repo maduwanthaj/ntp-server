@@ -4,7 +4,7 @@ A minimal, efficient Docker container running **Chrony** as an NTP server, desig
 
 ## Features
 
-- Uses **Chrony** for precise, reliable network time synchronization.
+- Uses Chrony for precise, reliable network time synchronization.
 - Lightweight Alpine-based Docker image.
 - Configurable logging, time sources, and client access rules.
 - Health checks to ensure the NTP server is active and in sync.
@@ -20,7 +20,7 @@ A minimal, efficient Docker container running **Chrony** as an NTP server, desig
 To build the Docker image locally:
 
 ```bash
-docker build -t chrony-ntp-server .
+docker build -t ntp-server .
 ```
 
 ### Running the Container
@@ -28,7 +28,7 @@ docker build -t chrony-ntp-server .
 Start the NTP server container with default settings:
 
 ```bash
-docker run -d --name ntp-server -p 123:123/udp chrony-ntp-server
+docker run -d --name ntp-server -p 123:123/udp ntp-server
 ```
 
 This will expose port `123/udp` for NTP synchronization.
@@ -41,7 +41,7 @@ The container can be configured via environment variables:
 |--------------------|-----------------------------------------------------------------|---------------------|
 | `NTP_POOL`         | NTP pool to sync time from.                                     | `pool.ntp.org`      |
 | `NTP_SERVER`       | Specific NTP servers to sync time from (comma-separated).       | -                   |
-| `NTP_CLIENT_ALLOW` | Allowed client IP ranges (comma-separated, e.g., `192.168.0.0/24`). | `allow all`         |
+| `NTP_CLIENT_ALLOW` | Allowed client IP ranges (comma-separated).                     | `allow all`         |
 | `NTP_CLIENT_DENY`  | Denied client IP ranges (comma-separated).                      | None                |
 | `LOG_LEVEL`        | Set log level: `0` for informational, `1` for warnings, `2` for non-fatal errors, `3` for fatal errors. | `0` (informational) |
 
@@ -53,7 +53,7 @@ Here’s an example with custom time servers and access controls:
 
 ```bash
 docker run -d --name ntp-server -p 123:123/udp \
-  -e NTP_SERVER="time.google.com,time.cloudflare.com" \
+  -e NTP_SERVER="time1.google.com,time2.google.com,time3.google.com,time4.google.com" \
   -e NTP_CLIENT_ALLOW="192.168.0.0/24" \
   -e LOG_LEVEL=1 \
   chrony-ntp-server
@@ -68,7 +68,7 @@ The container includes a health check that monitors Chrony’s synchronization s
 You can view the Chrony log level and other activity with:
 
 ```bash
-docker logs ntp-server
+docker logs --follow ntp-server
 ```
 
 ## File Structure
