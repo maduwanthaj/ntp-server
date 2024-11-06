@@ -1,6 +1,6 @@
 # Lightweight Chrony NTP server in Docker ⏱️
 
-A minimal, efficient Docker container running **Chrony** as an NTP server, designed for lightweight time synchronization with a customizable configuration.
+A lightweight Docker container running **Chrony** as an NTP server, designed for time synchronization with a customizable configuration.
 
 ## Features
 
