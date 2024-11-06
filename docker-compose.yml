@@ -1,0 +1,12 @@
+services:
+  ntp-server:
+    image: ntp-server
+    container_name: ntp-server
+    network_mode: bridge  # use Docker's default 'bridge' network mode
+    ports:
+      - 123:123/udp
+    environment:
+      - NTP_SERVER=time1.google.com,time2.google.com,time3.google.com,time4.google.com
+      - NTP_CLIENT_ALLOW=192.168.0.0/24
+      - LOG_LEVEL=1
+      - TZ=Asia/Colombo
