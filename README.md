@@ -1,10 +1,10 @@
-# Lightweight Chrony NTP server in Docker ⏱️
+# Lightweight chrony NTP server in Docker ⏱️
 
-A lightweight Docker container running **Chrony** as an NTP server, designed for time synchronization with a customizable configuration.
+A lightweight Docker container running chrony as an NTP server, designed for time synchronization with a customizable configuration.
 
 ## Features
 
-- Uses Chrony for precise, reliable network time synchronization.
+- Uses chrony for precise, reliable network time synchronization.
 - Lightweight Alpine-based Docker image.
 - Configurable logging, time sources, client access rules, and time zone.
 - Health checks to ensure the NTP server is active and in sync.
@@ -38,15 +38,15 @@ This will expose port `123/udp` for NTP synchronization.
 The container can be configured via environment variables:
 
 | Variable           | Description                                                     | Default             |
-|--------------------|-----------------------------------------------------------------|---------------------|
+|:-------------------|:----------------------------------------------------------------|:--------------------|
 | `NTP_POOL`         | NTP pool to sync time from.<br>Available options:<br>- Public: `pool.ntp.org`<br>- Google: `time.google.com` | `pool.ntp.org`      |
 | `NTP_SERVER`       | Specific NTP servers to sync time from (comma-separated).<br>Available options:<br>- Cloudflare: `time.cloudflare.com`<br>- Google: `time1.google.com,time2.google.com,time3.google.com,time4.google.com`<br>- Alibaba: `ntp1.aliyun.com,ntp2.aliyun.com,ntp3.aliyun.com,ntp4.aliyun.com` | -                   |
 | `NTP_CLIENT_ALLOW` | Allowed client IP ranges (comma-separated).                     | `allow all`         |
-| `NTP_CLIENT_DENY`  | Denied client IP ranges (comma-separated).                      | None                |
-| `LOG_LEVEL`        | Sets the Chrony log level. Options are:<br>  - `0`: informational (default)<br>  - `1`: warning<br>  - `2`: non-fatal error<br>  - `3`: fatal error | `0` (informational) |
+| `NTP_CLIENT_DENY`  | Denied client IP ranges (comma-separated).                      | none                |
+| `LOG_LEVEL`        | Sets the chrony log level. Options are:<br>  - `0`: informational (default)<br>  - `1`: warning<br>  - `2`: non-fatal error<br>  - `3`: fatal error | `0` (informational) |
 | `TZ`               | Set the time zone for the container. For example: `Asia/Colombo`. | UTC                 |
 
-**Note:** Setting `NTP_POOL` will override the default pool. If both `NTP_POOL` and `NTP_SERVER` are provided, `NTP_POOL` takes precedence.
+**NOTE:** Setting `NTP_POOL` will override the default pool. If both `NTP_POOL` and `NTP_SERVER` are provided, `NTP_POOL` takes precedence.
 
 ### Example Usage
 
@@ -63,7 +63,7 @@ docker run -d --name ntp-server -p 123:123/udp \
 
 ## Health Check
 
-The container includes a health check that monitors Chrony’s synchronization status. It runs every 30 seconds and fails if Chrony is not synchronized.
+The container includes a health check that monitors chrony’s synchronization status. It runs every 30 seconds and fails if chrony is not synchronized.
 
 ## Monitoring Commands
 
@@ -143,7 +143,7 @@ docker compose up -d
 
 ## Logs
 
-You can view the Chrony log level and other activity with:
+You can view the chrony log level and other activity with:
 
 ```bash
 docker logs --follow ntp-server
@@ -151,12 +151,12 @@ docker logs --follow ntp-server
 
 ## File Structure
 
-- **Dockerfile**: Sets up the Alpine environment, installs Chrony, and copies the startup script.
-- **app.sh**: The startup script that configures Chrony based on the provided environment variables and launches Chrony in the foreground.
+- **Dockerfile**: Sets up the Alpine environment, installs chrony, and copies the startup script.
+- **app.sh**: The startup script that configures chrony based on the provided environment variables and launches chrony in the foreground.
 
 ## Reference
 
-For more details on **Chrony**, visit the [official Chrony project website](https://chrony-project.org/).
+For more details on `chrony`, visit the [official chrony project website](https://chrony-project.org/).
 
 ## License
 
