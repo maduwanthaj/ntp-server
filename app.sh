@@ -25,11 +25,19 @@ echo "$(date -u "+%Y-%m-%dT%TZ") Log level set to value ${LOG_LEVEL} (${log_mess
 cat <<- EOF > "${CONFIG_FILE}"
 	# chronyd configuration file
 
-	# specify NTP pool or servers to use as time sources
-	$( [ -n "${NTP_POOL}" ] && echo "pool ${NTP_POOL} iburst" || 
-	{ [ -n "${NTP_SERVER}" ] && echo "${NTP_SERVER}" | tr ',' '\n' | sed 's/^/server /' | sed 's/$/ iburst/'; } || 
-	echo "pool pool.ntp.org iburst" )
-	
+	# define the NTP source configuration based on available environment variables (NTP_POOL, NTP_SERVER, ENABLE_NTS)
+	# if neither NTP_POOL nor NTP_SERVER is provided, fallback to the default pool "pool.ntp.org iburst"
+	# if NTS (Network Time Security) is enabled, include the "nts" option with the server/pool configurations.
+	$(if [ -z "${NTP_POOL}" ] && [ -z "${NTP_SERVER}" ]; then
+		echo "pool pool.ntp.org iburst"
+	elif [ "${ENABLE_NTS:-false}" = "true" ]; then
+		[ -n "${NTP_POOL}" ] && echo "pool ${NTP_POOL} iburst nts"
+		[ -n "${NTP_SERVER}" ] && echo "${NTP_SERVER}" | tr ',' '\n' | sed 's/^/server /;s/$/ iburst nts/'
+	else
+		[ -n "${NTP_POOL}" ] && echo "pool ${NTP_POOL} iburst"
+		[ -n "${NTP_SERVER}" ] && echo "${NTP_SERVER}" | tr ',' '\n' | sed 's/^/server /;s/$/ iburst/'
+	fi)
+
 	# apply a clock correction if the offset exceeds 0.1 seconds, up to 3 times after startup
 	makestep 0.1 3
 
@@ -40,12 +48,10 @@ cat <<- EOF > "${CONFIG_FILE}"
 	cmdport 0
 	
 	# specify NTP clients that are allowed to access the server
-	$({ [ -n "${NTP_CLIENT_ALLOW}" ] && echo "${NTP_CLIENT_ALLOW}" | tr ',' '\n' | sed 's/^/allow /'; } || 
-	echo "allow all" )
+	$({ [ -n "${NTP_CLIENT_ALLOW}" ] && echo "${NTP_CLIENT_ALLOW}" | tr ',' '\n' | sed 's/^/allow /'; } || echo "allow all" )
 
 	# specify NTP clients that are denied access to the server (optional)
-	$({ [ -n "${NTP_CLIENT_DENY}" ] && echo "${NTP_CLIENT_DENY}" | tr ',' '\n' | sed 's/^/deny /'; } ||
-	echo "# deny none") 
+	$({ [ -n "${NTP_CLIENT_DENY}" ] && echo "${NTP_CLIENT_DENY}" | tr ',' '\n' | sed 's/^/deny /'; } || echo "# deny none") 
 EOF
 
 
