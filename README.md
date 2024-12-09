@@ -7,6 +7,7 @@ A lightweight Docker container running chrony as an NTP server, designed for tim
 - Uses chrony for precise, reliable network time synchronization.
 - Lightweight Alpine-based Docker image.
 - Configurable logging, time sources, client access rules, and time zone.
+- Network Time Security (NTS) for secure time synchronization.
 - Health checks to ensure the NTP server is active and in sync.
 
 ## Getting Started
@@ -41,12 +42,11 @@ The container can be configured via environment variables:
 |:-------------------|:----------------------------------------------------------------|:--------------------|
 | `NTP_POOL`         | NTP pool to sync time from.<br>Available options:<br>- Public: `pool.ntp.org`<br>- Google: `time.google.com` | `pool.ntp.org`      |
 | `NTP_SERVER`       | Specific NTP servers to sync time from (comma-separated).<br>Available options:<br>- Cloudflare: `time.cloudflare.com`<br>- Google: `time1.google.com,time2.google.com,time3.google.com,time4.google.com`<br>- Alibaba: `ntp1.aliyun.com,ntp2.aliyun.com,ntp3.aliyun.com,ntp4.aliyun.com` | -                   |
+| `ENABLE_NTS`       | Enable Network Time Security (NTS) for secure time synchronization.<br>Options: `true`, `false`. | `false`             |
 | `NTP_CLIENT_ALLOW` | Allowed client IP ranges (comma-separated).                     | `allow all`         |
 | `NTP_CLIENT_DENY`  | Denied client IP ranges (comma-separated).                      | none                |
 | `LOG_LEVEL`        | Sets the chrony log level. Options are:<br>  - `0`: informational (default)<br>  - `1`: warning<br>  - `2`: non-fatal error<br>  - `3`: fatal error | `0` (informational) |
 | `TZ`               | Set the time zone for the container. For example: `Asia/Colombo`. | UTC                 |
-
-**NOTE:** Setting `NTP_POOL` will override the default pool. If both `NTP_POOL` and `NTP_SERVER` are provided, `NTP_POOL` takes precedence.
 
 ### Example Usage
 
@@ -58,6 +58,25 @@ docker run -d --name ntp-server -p 123:123/udp \
   -e NTP_CLIENT_ALLOW="192.168.0.0/24" \
   -e LOG_LEVEL=1 \
   -e TZ="Asia/Colombo" \
+  ntp-server
+```
+
+## Network Time Security (NTS)
+
+Network Time Security (NTS) is an extension to NTP that provides secure authentication between NTP clients and servers, protecting against certain types of attacks such as replay or man-in-the-middle.
+
+### Enabling NTS
+
+To enable Network Time Security (NTS), set the `ENABLE_NTS` environment variable to `true`. Ensure that the specified NTP pool or server supports NTS for secure synchronization.
+
+### Example Usage
+
+Here’s an example of enabling NTS for secure time synchronization:
+
+```bash
+docker run -d --name ntp-server -p 123:123/udp \
+  -e NTP_SERVER="time.cloudflare.com" \
+  -e ENABLE_NTS=true \
   ntp-server
 ```
 
